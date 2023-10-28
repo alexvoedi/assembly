@@ -1,0 +1,79 @@
+{
+  "name": "@alexvoedi/assembly",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "description": "",
+  "author": {
+    "name": "Alexander Vödisch",
+    "email": "voedisch.alexander@gmail.com"
+  },
+  "license": "UNLICENSED",
+  "homepage": "https://alexvoedi.dev/assembly/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexvoedi/assembly"
+  },
+  "bugs": {
+    "url": "https://github.com/alexvoedi/assembly/issues/"
+  },
+  "keywords": [
+    "typescript",
+    "idle",
+    "game",
+    "vue"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "cross-env NODE_ENV=production vite build",
+    "serve": "vite preview",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest",
+    "test:run": "vitest --run",
+    "test:ui": "vitest --ui",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "@fontsource-variable/quicksand": "^5.0.15",
+    "@vueuse/core": "^10.5.0",
+    "@vueuse/head": "^2.0.0",
+    "nanoid": "^5.0.2",
+    "pinia": "^2.1.7",
+    "vue": "^3.3.7",
+    "vue-i18n": "^9.6.1",
+    "vue-router": "^4.2.5"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "1.0.0-beta.29",
+    "@iconify-json/ic": "^1.1.14",
+    "@iconify-json/mdi": "^1.1.55",
+    "@intlify/unplugin-vue-i18n": "^1.4.0",
+    "@types/node": "^20.8.9",
+    "@unocss/preset-attributify": "^0.57.1",
+    "@unocss/preset-icons": "^0.57.1",
+    "@unocss/preset-uno": "^0.57.1",
+    "@unocss/reset": "^0.57.1",
+    "@unocss/transformer-directives": "^0.57.1",
+    "@unocss/transformer-variant-group": "^0.57.1",
+    "@vitejs/plugin-vue": "^4.4.0",
+    "@vitest/ui": "^0.34.6",
+    "@vue/compiler-sfc": "^3.3.7",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.52.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.0.2",
+    "naive-ui": "^2.35.0",
+    "typescript": "^5.2.2",
+    "unocss": "^0.57.1",
+    "unplugin-auto-import": "^0.16.7",
+    "unplugin-vue-components": "^0.25.2",
+    "vite": "^4.5.0",
+    "vite-plugin-inspect": "^0.7.41",
+    "vitest": "^0.34.6",
+    "vue-tsc": "^1.8.22"
+  },
+  "lint-staged": {
+    "*.{ts,json,html,js,tsx,jsx,md}": "npm run lint:fix"
+  }
+}
