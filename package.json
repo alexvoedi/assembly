@@ -26,8 +26,8 @@
     "dev": "vite",
     "build": "cross-env NODE_ENV=production vite build",
     "serve": "vite preview",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
     "test": "vitest",
     "test:run": "vitest --run",
     "test:ui": "vitest --ui",
@@ -73,6 +73,6 @@
     "vue-tsc": "^1.8.22"
   },
   "lint-staged": {
-    "*.{ts,json,html,js,tsx,jsx,md}": "npm run lint:fix"
+    "*.{ts,json,html,js,tsx,jsx,md}": "eslint --fix"
   }
 }
