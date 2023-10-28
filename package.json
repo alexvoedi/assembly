@@ -2,8 +2,7 @@
   "name": "@alexvoedi/assembly",
   "type": "module",
   "version": "0.0.1",
-  "private": true,
-  "description": "",
+  "description": "A game about blueprints, production and trade",
   "author": {
     "name": "Alexander Vödisch",
     "email": "voedisch.alexander@gmail.com"
