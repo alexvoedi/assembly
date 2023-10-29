@@ -22,6 +22,8 @@ jobs:
 
       - name: Commit Changes
         run: |
+          git config --local user.email "alexander.voedisch@gmail.com"
+          git config --local user.name "Alexander Vödisch"
           git diff --quiet || git commit -am "chore: update dependencies"
 
   lint:
