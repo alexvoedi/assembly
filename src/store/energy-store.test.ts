@@ -13,6 +13,7 @@ describe('energy-store', () => {
 
       energyStore.energy = 10
 
+      expect(energyStore.hasEnoughEnergy(-5)).toBe(true)
       expect(energyStore.hasEnoughEnergy(5)).toBe(true)
       expect(energyStore.hasEnoughEnergy(10)).toBe(true)
     })

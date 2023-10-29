@@ -1,25 +1,25 @@
 import { describe, expect, it } from 'vitest'
-import { isQuantityOrThrow } from './Quantity'
+import { isInteger, isPositive, isQuantity } from './Quantity'
 
 describe('quantity', () => {
-  it('isQuantityOrThrow', () => {
-    expect(() => isQuantityOrThrow(-1)).toThrow()
-    expect(() => isQuantityOrThrow(0)).not.toThrow()
-    expect(() => isQuantityOrThrow(1.1)).toThrow()
-    expect(() => isQuantityOrThrow(1)).not.toThrow()
+  it('isQuantity', () => {
+    expect(isQuantity(-1)).toBe(false)
+    expect(isQuantity(1.1)).toBe(false)
+    expect(isQuantity(0)).toBe(true)
+    expect(isQuantity(1)).toBe(true)
   })
 
-  it('isPositiveNumberOrThrow', () => {
-    expect(() => isQuantityOrThrow(-1)).toThrow()
-    expect(() => isQuantityOrThrow(0)).not.toThrow()
-    expect(() => isQuantityOrThrow(1.1)).toThrow()
-    expect(() => isQuantityOrThrow(1)).not.toThrow()
+  it('isPositive', () => {
+    expect(isPositive(-1)).toBe(false)
+    expect(isPositive(1.1)).toBe(true)
+    expect(isPositive(0)).toBe(true)
+    expect(isPositive(1)).toBe(true)
   })
 
-  it('isIntegerOrThrow', () => {
-    expect(() => isQuantityOrThrow(-1)).toThrow()
-    expect(() => isQuantityOrThrow(0)).not.toThrow()
-    expect(() => isQuantityOrThrow(1.1)).toThrow()
-    expect(() => isQuantityOrThrow(1)).not.toThrow()
+  it('isInteger', () => {
+    expect(isInteger(1.1)).toBe(false)
+    expect(isInteger(-1)).toBe(true)
+    expect(isInteger(0)).toBe(true)
+    expect(isInteger(1)).toBe(true)
   })
 })

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import type { RemovableRef } from '@vueuse/core'
 import type { ItemId } from '../data/items/ItemId'
-import { isPositiveNumberOrThrow, isQuantityOrThrow } from '../functions/Quantity'
+import { isPositive, isQuantity } from '../functions/Quantity'
 import type { ItemWithQuantity } from '@/interfaces/Item'
 
 type InventoryStore = RemovableRef<{
@@ -43,7 +43,8 @@ export const useInventoryStore = defineStore('inventory-store', {
     },
 
     hasQuantityOfItem(itemId: ItemId, quantity: number) {
-      isQuantityOrThrow(quantity)
+      if (!isQuantity(quantity))
+        throw new Error(`Tried to check if has quantity of ${itemId} but ${quantity} is not a quantity.`)
 
       const inventoryItem = this.getItem(itemId)
 
@@ -59,7 +60,8 @@ export const useInventoryStore = defineStore('inventory-store', {
     },
 
     addItem(itemId: ItemId, quantity: number) {
-      isQuantityOrThrow(quantity)
+      if (!isQuantity(quantity))
+        throw new Error(`Tried to add ${quantity} of ${itemId} but ${quantity} is not a quantity.`)
 
       let inventoryItem = this.items[itemId]
 
@@ -83,7 +85,8 @@ export const useInventoryStore = defineStore('inventory-store', {
     },
 
     addMoney(amount: number) {
-      isPositiveNumberOrThrow(amount)
+      if (!isPositive(amount))
+        throw new Error(`Tried to add ${amount} but it's not a positive number.`)
 
       this.money += amount
     },
@@ -98,7 +101,8 @@ export const useInventoryStore = defineStore('inventory-store', {
     },
 
     removeItem(itemId: ItemId, quantity: number) {
-      isQuantityOrThrow(quantity)
+      if (!isQuantity(quantity))
+        throw new Error(`Tried to remove ${quantity} of ${itemId} but ${quantity} is not a quantity.`)
 
       const inventoryItem = this.getItem(itemId)
 

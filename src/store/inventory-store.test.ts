@@ -261,6 +261,12 @@ describe('inventory-store', () => {
 
       expect(inventoryStore.money).toBe(123)
     })
+
+    it('should throw if the amount is not positive', () => {
+      const inventoryStore = useInventoryStore()
+
+      expect(() => inventoryStore.addMoney(-1)).toThrow()
+    })
   })
 
   describe('removeMoney', () => {
