@@ -2,7 +2,7 @@
 import { useMessage } from 'naive-ui'
 import type { TradeStrategyData } from '../../interfaces/TradeStrategy'
 import { useMarketplaceStore } from '@/store/marketplace-store'
-import type { MakeNullable } from '@/types/MakeNullable'
+import type { MakeNullable } from '@/utils/types/MakeNullable'
 
 const marketplaceStore = useMarketplaceStore()
 const message = useMessage()

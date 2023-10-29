@@ -46,7 +46,7 @@ const columns: DataTableColumns<Blueprint> = [
             {
               class: [
                 'flex items-center',
-                inventoryStore.hasItem(item.id) ? 'text-green' : 'text-red',
+                inventoryStore.hasQuantityOfItem(item.id, item.quantity) ? 'text-green' : 'text-red',
               ],
             },
         `${item.quantity} ${Items[item.id].name}`,

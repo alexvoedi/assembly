@@ -1,61 +1,104 @@
 import { Blueprints } from '../data/blueprints/Blueprints'
-import { Sciences } from '../data/science/Sciences'
 import { useProductionStore } from '../store/production-store'
-import { useScienceStore } from '../store/science-store'
-import { useBlueprint } from './useBlueprint'
+
+enum TimeTravelQueueItemType {
+  Research = 'research',
+  Production = 'production',
+}
+
+interface BaseTimeTravelQueueItem {
+  type: TimeTravelQueueItemType
+  finishTime: number
+}
+
+interface TimeTravelProductionItem extends BaseTimeTravelQueueItem {
+  type: TimeTravelQueueItemType.Production
+  blueprintId: string
+}
+
+type TimeTravelQueueItem = TimeTravelProductionItem
 
 export function useTimeTravel() {
-  const scienceStore = useScienceStore()
   const productionStore = useProductionStore()
 
-  const { addBlueprintItemsToInventory } = useBlueprint()
+  // function fastForwardResearch() {
+  //   const researchPlans = Object.values(scienceStore.researching)
 
-  function fastForwardResearch() {
-    const researchPlans = Object.values(scienceStore.researching)
+  //   researchPlans.forEach((researchPlan) => {
+  //     const science = Sciences[researchPlan.scienceId]
 
-    researchPlans.forEach((researchPlan) => {
-      const science = Sciences[researchPlan.scienceId]
+  //     const timeSinceStart = Date.now() - researchPlan.start
 
-      const timeSinceStart = Date.now() - researchPlan.start
+  //     if (timeSinceStart > science.researchTime) {
+  //       scienceStore.finishResearch(researchPlan.scienceId)
+  //     }
+  //     else {
+  //       scienceStore.research({
+  //         ...researchPlan,
+  //         start: Date.now() - timeSinceStart,
+  //       })
+  //     }
+  //   })
+  // }
 
-      if (timeSinceStart > science.researchTime) {
-        scienceStore.finishResearch(researchPlan.scienceId)
-      }
-      else {
-        scienceStore.research({
-          ...researchPlan,
-          start: Date.now() - timeSinceStart,
-        })
-      }
-    })
-  }
+  // function fastForwardProduction() {
+  //   const productionPlans = Object.values(productionStore.producing)
 
-  function fastForwardProduction() {
+  //   productionPlans.forEach((productionPlan) => {
+  //     const blueprint = Blueprints[productionPlan.blueprintId]
+
+  //     const timeSinceStart = Date.now() - productionPlan.start
+
+  //     const producedItems = Math.floor(timeSinceStart / blueprint.productionTime)
+
+  //     for (let i = 0; i < producedItems; i++)
+  //       addBlueprintItemsToInventory(blueprint)
+
+  //     productionStore.produce({
+  //       ...productionPlan,
+  //       start: Date.now() - (timeSinceStart % blueprint.productionTime),
+  //     })
+  //   })
+  // }
+
+  const buildProductionQueue = (now: number) => {
+    const queue: TimeTravelQueueItem[] = []
+
     const productionPlans = Object.values(productionStore.producing)
 
-    productionPlans.forEach((productionPlan) => {
+    productionPlans.forEach((productionPlan, index) => {
       const blueprint = Blueprints[productionPlan.blueprintId]
 
-      const timeSinceStart = Date.now() - productionPlan.start
+      let productionPlanFinishTime = productionPlan.start + (index + 1) * blueprint.productionTime
 
-      const producedItems = Math.floor(timeSinceStart / blueprint.productionTime)
+      while (productionPlanFinishTime <= now) {
+        queue.push({
+          type: TimeTravelQueueItemType.Production,
+          blueprintId: productionPlan.blueprintId,
+          finishTime: productionPlanFinishTime,
+        })
 
-      for (let i = 0; i < producedItems; i++)
-        addBlueprintItemsToInventory(blueprint)
-
-      productionStore.produce({
-        ...productionPlan,
-        start: Date.now() - (timeSinceStart % blueprint.productionTime),
-      })
+        productionPlanFinishTime += Blueprints[productionPlan.blueprintId].productionTime
+      }
     })
+
+    return queue
   }
 
-  const timeTravel = () => {
-    fastForwardResearch()
-    fastForwardProduction()
+  const buildTimeTravelQueue = (now: number) => {
+    const productionQueue = buildProductionQueue(now)
+
+    return productionQueue
+  }
+
+  const timeTravel = (now: number) => {
+    buildTimeTravelQueue(now)
+    // fastForwardResearch()
+    // fastForwardProduction()
   }
 
   return {
+    buildProductionQueue,
     timeTravel,
   }
 }
