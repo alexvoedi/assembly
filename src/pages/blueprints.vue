@@ -17,8 +17,37 @@ const columns: DataTableColumns<Blueprint> = [
     key: 'description',
   },
   {
-    title: 'Items',
-    key: 'items',
+    title: 'Input',
+    key: 'input',
+    render(blueprint) {
+      const blueprintData = Blueprints[blueprint.id]
+
+      if (!blueprintData.cost)
+        return null
+
+      if (!blueprintData.cost.items)
+        return null
+
+      return h(
+        'div',
+        {
+          class: 'font-mono',
+        },
+        Object.values(blueprintData.cost.items).map(item => h(
+          'div',
+          {
+            class: [
+              'flex items-center',
+            ],
+          },
+          `${item.quantity} ${Items[item.id].name}`,
+        )),
+      )
+    },
+  },
+  {
+    title: 'Output',
+    key: 'output',
     render(blueprint) {
       return h(
         'div',

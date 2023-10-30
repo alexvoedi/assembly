@@ -17,27 +17,40 @@ export const Sciences: Record<ScienceId, Science> = {
         },
       },
     },
-    requirements: {
-      sciences: [],
-    },
     results: {
       blueprints: [BlueprintId.IronOreExtraction],
-      sciences: [],
-      effects: [],
     },
   },
   [ScienceId.InventoryUpgrade1]: {
     id: ScienceId.InventoryUpgrade1,
     name: 'Inventory Upgrade 1',
-    description: 'Increases the inventory size by 25.0000.',
+    description: 'Increases the inventory size by 25.000.',
     researchTime: 60 * 60 * 1000,
     cost: {
       money: 10_000,
     },
-    requirements: {
-      sciences: [],
+    results: {
+      stores: {
+        inventoryStore: (inventoryStore) => {
+          inventoryStore.value.maxItems += 25_000
+        },
+      },
+    },
+  },
+  [ScienceId.MultiTasking1]: {
+    id: ScienceId.MultiTasking1,
+    name: 'Multi-Tasking 1',
+    description: 'Increases the number of tasks you can do at the same time by 1.',
+    researchTime: 30 * 60 * 1000,
+    cost: {
+      money: 1_000,
     },
     results: {
+      stores: {
+        productionStore: (productionStore) => {
+          productionStore.value.maxProducing += 1
+        },
+      },
     },
   },
 }

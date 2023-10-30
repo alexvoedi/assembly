@@ -4,7 +4,7 @@ import type { ItemId } from '../data/items/ItemId'
 import { isPositive, isQuantity } from '../functions/Quantity'
 import type { ItemWithQuantity } from '@/interfaces/Item'
 
-type InventoryStore = RemovableRef<{
+export type InventoryStore = RemovableRef<{
   money: number
   items: InventoryItems
   maxItems: number
@@ -45,6 +45,9 @@ export const useInventoryStore = defineStore('inventory-store', {
     hasQuantityOfItem(itemId: ItemId, quantity: number) {
       if (!isQuantity(quantity))
         throw new Error(`Tried to check if has quantity of ${itemId} but ${quantity} is not a quantity.`)
+
+      if (!this.hasItem(itemId))
+        return false
 
       const inventoryItem = this.getItem(itemId)
 

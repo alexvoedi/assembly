@@ -6,6 +6,7 @@ import { useEnergyStore } from './energy-store'
 import { useInventoryStore } from './inventory-store'
 import { useProductionStore } from './production-store'
 import { useScienceStore } from './science-store'
+import { useMarketplaceStore } from './marketplace-store'
 
 type GameStore = RemovableRef<{
   start: number
@@ -22,6 +23,7 @@ export const useGameStore = defineStore('game-store', {
       const effectStore = useEffectStore()
       const energyStore = useEnergyStore()
       const inventoryStore = useInventoryStore()
+      const marketplaceStore = useMarketplaceStore()
       const productionStore = useProductionStore()
       const scienceStore = useScienceStore()
 
@@ -31,6 +33,7 @@ export const useGameStore = defineStore('game-store', {
       effectStore.resetStore()
       energyStore.resetStore()
       inventoryStore.resetStore()
+      marketplaceStore.resetStore()
       productionStore.resetStore()
       scienceStore.resetStore()
 

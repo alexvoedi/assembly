@@ -26,7 +26,7 @@ const lastTab = useLocalStorage('marketplace-page/default-tab', 'buy')
           </template>
         </NTabPane>
 
-        <NTabPane name="sell">
+        <NTabPane name="sell" style="padding: 0;">
           <template #tab>
             <div class="flex items-center justify-center gap-2 text-xl">
               <span class="ico-ic-baseline-monetization-on" />
@@ -34,7 +34,7 @@ const lastTab = useLocalStorage('marketplace-page/default-tab', 'buy')
             </div>
           </template>
 
-          <div>Sell</div>
+          <MarketplaceSellingDataTable />
         </NTabPane>
       </NTabs>
     </NCard>

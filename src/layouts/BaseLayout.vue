@@ -30,7 +30,7 @@ inventoryStore.$onAction(({ name, args }) => {
 
 setInterval(() => {
   marketplaceStore.updateMarketValues()
-}, 10 * 1000)
+}, 60 * 1000)
 </script>
 
 <template>

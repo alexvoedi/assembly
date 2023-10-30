@@ -19,14 +19,13 @@ const percent = computed(() => 2 * Math.PI * (radius.value - 2))
       class="transform rotate-270"
     >
       <circle
-        class="stroke-indigo-600"
+        class="stroke-emerald-900"
         :cx="radius"
         :cy="radius"
         :r="radius - 2"
         fill="none"
         stroke-width="3"
         :stroke-dasharray="percent"
-        :stroke-dashoffset="(1 - percent) * progress"
       />
 
       <circle

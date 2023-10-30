@@ -7,7 +7,7 @@ import { useCost } from '../composables/useCost'
 import { useBlueprint } from '../composables/useBlueprint'
 import { useInventoryStore } from './inventory-store'
 
-type ProductionStore = RemovableRef<{
+export type ProductionStore = RemovableRef<{
   producing: Partial<Record<BlueprintId, ProductionPlan>>
   maxProducing: number
 }>
@@ -88,14 +88,17 @@ export const useProductionStore = defineStore('production-store', {
 
       const timeout = blueprint.productionTime - timeSinceStart
 
-      const timerId = setTimeout(() => {
+      const timerId = window.setTimeout(() => {
         this.finishProduction(productionPlan.blueprintId)
 
         if (productionPlan.repeat)
           this.startProduction(productionPlan)
       }, timeout)
 
-      productionPlan.timerId = timerId
+      productionPlan.timerId = Number.parseInt(
+        timerId.toString(),
+        10,
+      )
     },
 
     stopProduction(blueprintId: BlueprintId) {

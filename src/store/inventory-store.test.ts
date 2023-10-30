@@ -98,10 +98,10 @@ describe('inventory-store', () => {
       expect(inventoryStore.hasQuantityOfItem(ItemId.Water, 124)).toBe(false)
     })
 
-    it('should throw if the item does not exist', () => {
+    it('should return false if the item does not exist', () => {
       const inventoryStore = useInventoryStore()
 
-      expect(() => inventoryStore.hasQuantityOfItem(ItemId.Water, 123)).toThrow()
+      expect(inventoryStore.hasQuantityOfItem(ItemId.Water, 123)).toBe(false)
     })
   })
 
@@ -140,15 +140,15 @@ describe('inventory-store', () => {
       ).toBe(false)
     })
 
-    it('should throw if at least one item does not exist', () => {
+    it('should return false if atleast one item does not exist', () => {
       const inventoryStore = useInventoryStore()
 
       inventoryStore.addItem(ItemId.Water, 123)
 
-      expect(() => inventoryStore.hasQuantityOfItems([{ id: ItemId.Water, quantity: 123 }, {
+      expect(inventoryStore.hasQuantityOfItems([{ id: ItemId.Water, quantity: 123 }, {
         id: ItemId.Wheat,
         quantity: 1,
-      }])).toThrow()
+      }])).toBe(false)
     })
   })
 

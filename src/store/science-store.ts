@@ -54,9 +54,6 @@ export const useScienceStore = defineStore('science-store', {
     },
 
     removeResearchable(scienceId: ScienceId) {
-      if (!this.isResearchable(scienceId))
-        throw new Error(`Not researchable ${scienceId}`)
-
       this.researchable = this.researchable.filter(id => id !== scienceId)
     },
 
@@ -115,13 +112,9 @@ export const useScienceStore = defineStore('science-store', {
     research(researchPlan: ResearchPlan) {
       const science = Sciences[researchPlan.scienceId]
 
-      const timeout = science.researchTime
-
-      const timerId = setTimeout(() => {
+      researchPlan.timerId = setTimeout(() => {
         this.finishResearch(researchPlan.scienceId)
-      }, timeout)
-
-      researchPlan.timerId = timerId
+      }, science.researchTime)
     },
 
     stopResearch(scienceId: ScienceId) {
@@ -134,6 +127,10 @@ export const useScienceStore = defineStore('science-store', {
 
       delete this.researching[scienceId]
     },
+
+    // cancelResearch(scienceId: ScienceId) {
+    //
+    // },
 
     getResearchProgress(scienceId: ScienceId, now: number) {
       const researchPlan = this.researching[scienceId]
