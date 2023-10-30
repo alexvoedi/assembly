@@ -32,7 +32,7 @@ const appVersion = APP_VERSION
           </div>
         </template>
 
-        <div>Die Menge an Geld.</div>
+        <div>The amount of money you currently have.</div>
       </NTooltip>
 
       <NTooltip trigger="hover">
@@ -43,7 +43,7 @@ const appVersion = APP_VERSION
           </div>
         </template>
 
-        <div>Die Menge an verfügbarer Energie.</div>
+        <div>The amount of energy you have available.</div>
       </NTooltip>
 
       <NTooltip trigger="hover">
@@ -60,7 +60,7 @@ const appVersion = APP_VERSION
           </div>
         </template>
 
-        <div>Der Füllstand des Inventars.</div>
+        <div>The fill level of the inventory.</div>
       </NTooltip>
     </div>
 

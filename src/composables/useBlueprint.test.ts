@@ -15,7 +15,7 @@ describe('useBlueprint', () => {
     const { getBlueprintItemIds } = useBlueprint()
 
     expect(getBlueprintItemIds(BlueprintId.Logging)).toEqual([ItemId.Wood])
-    expect(getBlueprintItemIds(BlueprintId.OreMining)).toEqual([ItemId.Ore, ItemId.Wood])
+    expect(getBlueprintItemIds(BlueprintId.OreMining)).toEqual([ItemId.Ore])
   })
 
   describe('addBlueprintItemsToInventory', () => {
@@ -24,33 +24,25 @@ describe('useBlueprint', () => {
 
       const { addBlueprintItemsToInventory } = useBlueprint()
 
-      addBlueprintItemsToInventory(Blueprints[BlueprintId.Logging])
+      const blueprint = Blueprints[BlueprintId.Logging]
 
-      expect(inventoryStore.items).toEqual({
-        [ItemId.Wood]: {
-          quantity: 1,
-          totalQuantity: 1,
-        },
-      })
+      addBlueprintItemsToInventory(blueprint)
+
+      expect(inventoryStore.items).toHaveProperty(ItemId.Wood)
+      expect(inventoryStore.items.wood?.quantity).toBeGreaterThanOrEqual(50)
+      expect(inventoryStore.items.wood?.quantity).toBeLessThanOrEqual(300)
     })
 
-    it('should add 1 ore and 1 wood to the inventory', () => {
+    it('should add 1 ore to the inventory', () => {
       const inventoryStore = useInventoryStore()
 
       const { addBlueprintItemsToInventory } = useBlueprint()
 
       addBlueprintItemsToInventory(Blueprints[BlueprintId.OreMining])
 
-      expect(inventoryStore.items).toEqual({
-        [ItemId.Ore]: {
-          quantity: 1,
-          totalQuantity: 1,
-        },
-        [ItemId.Wood]: {
-          quantity: 1,
-          totalQuantity: 1,
-        },
-      })
+      expect(inventoryStore.items).toHaveProperty(ItemId.Ore)
+      expect(inventoryStore.items.ore?.quantity).toBeGreaterThanOrEqual(1)
+      expect(inventoryStore.items.ore?.quantity).toBeLessThanOrEqual(10)
     })
   })
 })

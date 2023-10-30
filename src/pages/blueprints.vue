@@ -4,8 +4,22 @@ import { useBlueprintStore } from '../store/blueprint-store'
 import type { Blueprint } from '../interfaces/Blueprint'
 import { Blueprints } from '../data/blueprints/Blueprints'
 import { Items } from '../data/items/Items'
+import { UnitMeasurement } from '../data/items/UnitMeasurement'
 
 const blueprintStroe = useBlueprintStore()
+
+function unitToIcon(unit: UnitMeasurement) {
+  switch (unit) {
+    case UnitMeasurement.Kilogram:
+      return 'ico-mdi-weight-kilogram text-yellow'
+    case UnitMeasurement.Liter:
+      return 'ico-mdi-water text-blue'
+    case UnitMeasurement.Piece:
+      return 'ico-mdi-cube-outline text-green'
+    default:
+      throw new Error(`Unknown unit: ${unit}`)
+  }
+}
 
 const columns: DataTableColumns<Blueprint> = [
   {
@@ -33,15 +47,26 @@ const columns: DataTableColumns<Blueprint> = [
         {
           class: 'font-mono',
         },
-        Object.values(blueprintData.cost.items).map(item => h(
-          'div',
-          {
-            class: [
-              'flex items-center',
+        Object.values(blueprintData.cost.items).map((item) => {
+          const unit = unitToIcon(Items[item.id].unit.measurement)
+
+          return h(
+            'div',
+            {
+              class: [
+                'flex items-center gap-1',
+              ],
+            },
+            [
+              `${Items[item.id].name} ${item.quantity}`,
+              h('span', {
+                class: [
+                  unit,
+                ],
+              }),
             ],
-          },
-          `${item.quantity} ${Items[item.id].name}`,
-        )),
+          )
+        }),
       )
     },
   },
@@ -54,15 +79,30 @@ const columns: DataTableColumns<Blueprint> = [
         {
           class: 'font-mono',
         },
-        Object.values(Blueprints[blueprint.id].items).map(item => h(
-          'div',
-          {
-            class: [
-              'flex items-center',
+        Object.values(Blueprints[blueprint.id].items).map((item) => {
+          const quantity = Array.isArray(item.quantity)
+            ? `${item.quantity[0]}-${item.quantity[1]}`
+            : item.quantity
+
+          const unit = unitToIcon(Items[item.id].unit.measurement)
+
+          return h(
+            'div',
+            {
+              class: [
+                'flex items-center gap-1',
+              ],
+            },
+            [
+              `${Items[item.id].name} ${quantity}`,
+              h('span', {
+                class: [
+                  unit,
+                ],
+              }),
             ],
-          },
-        `${item.quantity} ${Items[item.id].name} (${item.probability * 100}%)`,
-        )),
+          )
+        }),
       )
     },
   },
@@ -82,5 +122,4 @@ const data = computed(() => blueprintStroe.blueprints.map(blueprintId => ({
 </template>
 
 <style>
-
 </style>

@@ -1,11 +1,34 @@
 <script setup lang="ts">
+import { useMarketplaceStore } from '../store/marketplace-store'
+import roundToNFractionDigits from '../utils/roundToNFractionDigits'
+
 const lastTab = useLocalStorage('marketplace-page/default-tab', 'buy')
+
+const marketplaceStore = useMarketplaceStore()
+
+const totalMarketValue = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  maximumFractionDigits: 8,
+}).format(
+  roundToNFractionDigits(marketplaceStore.getTotalMarketValue(), 2),
+)
 </script>
 
 <template>
   <NH1>Marketplace</NH1>
 
   <div class="space-y-6">
+    <div class="flex">
+      <NCard class="w-auto!">
+        <NStatistic label="Total Market Value">
+          <div class="text-center">
+            {{ totalMarketValue }}
+          </div>
+        </NStatistic>
+      </NCard>
+    </div>
+
     <NCard content-style="padding: 0;">
       <NTabs
         v-model:value="lastTab"
