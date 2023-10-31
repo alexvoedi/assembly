@@ -192,19 +192,6 @@ export const Blueprints: Record<BlueprintId, Blueprint> = {
     },
     productionTime: 30 * 1000,
   },
-  [BlueprintId.PetroleumExtraction]: {
-    id: BlueprintId.PetroleumExtraction,
-    name: 'Petroleum Extraction',
-    description: 'Extracts petroleum from the ground.',
-    items: {
-      [ItemId.Petroleum]: {
-        id: ItemId.Petroleum,
-        probability: 1,
-        quantity: [1, 5],
-      },
-    },
-    productionTime: 30 * 1000,
-  },
   [BlueprintId.NaturalGasExtraction]: {
     id: BlueprintId.NaturalGasExtraction,
     name: 'Natural Gas Extraction',
@@ -233,6 +220,27 @@ export const Blueprints: Record<BlueprintId, Blueprint> = {
     items: {
       [ItemId.Screw]: {
         id: ItemId.Screw,
+        probability: 1,
+        quantity: [1, 2],
+      },
+    },
+    productionTime: 30 * 1000,
+  },
+  [BlueprintId.CrudeOilRefinement]: {
+    id: BlueprintId.CrudeOilRefinement,
+    name: 'Crude Oil Refining',
+    description: 'Refines crude oil into petroleum.',
+    cost: {
+      items: {
+        [ItemId.CrudeOil]: {
+          id: ItemId.Coal,
+          quantity: 1,
+        },
+      },
+    },
+    items: {
+      [ItemId.Gasoline]: {
+        id: ItemId.Gasoline,
         probability: 1,
         quantity: [1, 2],
       },

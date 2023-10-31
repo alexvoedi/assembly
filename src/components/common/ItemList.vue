@@ -25,8 +25,6 @@ function unitToIcon(unit: UnitMeasurement) {
       return 'ico-mdi-flash text-yellow-300'
     case UnitMeasurement.Money:
       return 'ico-ic-baseline-attach-money text-green-700'
-    default:
-      throw new Error(`Unknown unit: ${unit}`)
   }
 }
 

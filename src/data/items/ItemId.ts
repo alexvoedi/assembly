@@ -12,7 +12,7 @@ export enum ItemId {
   // Leather = 'leather',
   Wool = 'wool',
   Gold = 'gold',
-  Petroleum = 'petroleum', // Erdöl
+  CrudeOil = 'crude-oil', // Rohöl
   NaturalGas = 'natural-gas', // Erdgas
   // Uranium = 'uranium',
   // Lithium = 'lithium',
@@ -20,4 +20,7 @@ export enum ItemId {
   // Carbon = 'carbon', // Kohlenstoff
   // Silicon = 'silicon', // Silizium
   // Glass = 'glass',
+  Plastic = 'plastic',
+  Lubricant = 'lubricant', // Schmiermittel
+  Gasoline = 'gasoline', // Benzin
 }

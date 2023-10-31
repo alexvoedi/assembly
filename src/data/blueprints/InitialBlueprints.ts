@@ -13,7 +13,6 @@ export const InitialBlueprints: BlueprintId[] = [
   BlueprintId.SandMining,
   BlueprintId.WoolProduction,
   BlueprintId.GoldMining,
-  BlueprintId.PetroleumExtraction,
   BlueprintId.NaturalGasExtraction,
   BlueprintId.ScrewProduction,
 ]

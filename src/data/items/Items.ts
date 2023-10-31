@@ -186,8 +186,8 @@ export const Items: Record<ItemId, Item> = {
       max: 10,
     },
   },
-  [ItemId.Petroleum]: {
-    id: ItemId.Petroleum,
+  [ItemId.CrudeOil]: {
+    id: ItemId.CrudeOil,
     name: 'Petroleum',
     description: 'A material that can be used to build things.',
     unit: {
@@ -212,6 +212,48 @@ export const Items: Record<ItemId, Item> = {
       average: 0.0002,
       min: 0.0001,
       max: 0.001,
+    },
+  },
+  [ItemId.Plastic]: {
+    id: ItemId.Plastic,
+    name: 'Plastic',
+    description: 'A material that can be used to build things.',
+    unit: {
+      type: UnitType.Discrete,
+      measurement: UnitMeasurement.Kilogram,
+    },
+    marketValue: {
+      average: 0.5,
+      min: 0.1,
+      max: 1,
+    },
+  },
+  [ItemId.Lubricant]: {
+    id: ItemId.Lubricant,
+    name: 'Lubricant',
+    description: 'A material that can be used to build things',
+    unit: {
+      type: UnitType.Discrete,
+      measurement: UnitMeasurement.Liter,
+    },
+    marketValue: {
+      average: 0.5,
+      min: 0.1,
+      max: 1,
+    },
+  },
+  [ItemId.Gasoline]: {
+    id: ItemId.Gasoline,
+    name: 'Gasoline',
+    description: 'A material that can be used to build things',
+    unit: {
+      type: UnitType.Discrete,
+      measurement: UnitMeasurement.Liter,
+    },
+    marketValue: {
+      average: 1.6,
+      min: 0.5,
+      max: 5,
     },
   },
 }

@@ -11,7 +11,7 @@ export enum BlueprintId {
   SandMining = 'sand-mining',
   WoolProduction = 'wool-production',
   GoldMining = 'gold-mining',
-  PetroleumExtraction = 'petroleum-extraction',
   NaturalGasExtraction = 'natural-gas-extraction',
   ScrewProduction = 'screw-production',
+  CrudeOilRefinement = 'crude-oil-refining',
 }
