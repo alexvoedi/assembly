@@ -1,18 +1,28 @@
 <script setup lang="ts">
+import { useInventoryStore } from '../store/inventory-store'
 import { useMarketplaceStore } from '../store/marketplace-store'
 import roundToNFractionDigits from '../utils/roundToNFractionDigits'
 
-const lastTab = useLocalStorage('marketplace-page/default-tab', 'buy')
-
 const marketplaceStore = useMarketplaceStore()
+const inventoryStore = useInventoryStore()
 
-const totalMarketValue = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-  maximumFractionDigits: 8,
-}).format(
-  roundToNFractionDigits(marketplaceStore.getTotalMarketValue(), 2),
-)
+const totalMarketValue = computed(() => {
+  let total = inventoryStore.money
+
+  inventoryStore.getItemArray().forEach((inventoryItem) => {
+    const marketValue = marketplaceStore.prices[inventoryItem.id].current
+
+    total += inventoryItem.quantity * marketValue
+  })
+
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 8,
+  }).format(
+    roundToNFractionDigits(total, 2),
+  )
+})
 </script>
 
 <template>
@@ -29,37 +39,8 @@ const totalMarketValue = new Intl.NumberFormat('en-US', {
       </NCard>
     </div>
 
-    <NCard content-style="padding: 0;">
-      <NTabs
-        v-model:value="lastTab"
-        default-value="buy"
-        size="large"
-        type="segment"
-        animated
-        :tabs-padding="20"
-        pane-style="padding: 20px;"
-        justify-content="space-evenly"
-      >
-        <NTabPane name="buy">
-          <template #tab>
-            <div class="flex items-center justify-center gap-2 text-xl">
-              <span class="ico-ic-baseline-add-shopping-cart" />
-              <span>Buy</span>
-            </div>
-          </template>
-        </NTabPane>
-
-        <NTabPane name="sell" style="padding: 0;">
-          <template #tab>
-            <div class="flex items-center justify-center gap-2 text-xl">
-              <span class="ico-ic-baseline-monetization-on" />
-              <span>Sell</span>
-            </div>
-          </template>
-
-          <MarketplaceSellingDataTable />
-        </NTabPane>
-      </NTabs>
+    <NCard title="Sell Items" content-style="padding: 0;">
+      <MarketplaceSellingDataTable />
     </NCard>
 
     <MarketplaceAutomationCard />

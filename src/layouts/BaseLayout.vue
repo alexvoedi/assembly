@@ -44,10 +44,10 @@ setInterval(() => {
         <AppNav />
       </NLayoutSider>
 
-      <NLayout content-style="">
+      <NLayout>
         <NScrollbar trigger="none" content-style="display: flex; flex-direction: column; min-height: 100%;">
           <NLayoutContent class="h-full">
-            <main class="px-6 py-4 container mx-auto">
+            <main class="p-8 container mx-auto">
               <RouterView />
             </main>
           </NLayoutContent>

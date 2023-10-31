@@ -16,16 +16,18 @@ const columns: DataTableColumns<Blueprint> = [
     title: 'Name',
     key: 'name',
     width: 240,
+    defaultSortOrder: 'ascend',
+    sorter: (a, b) => a.name.localeCompare(b.name),
   },
   {
     title: 'Description',
     key: 'description',
-    width: 360,
+    width: 320,
   },
   {
     title: 'Input',
     key: 'input',
-    width: 280,
+    width: 160,
     render(blueprint) {
       const blueprintData = Blueprints[blueprint.id]
 
@@ -45,7 +47,7 @@ const columns: DataTableColumns<Blueprint> = [
   {
     title: 'Output',
     key: 'output',
-    width: 280,
+    width: 240,
     render(blueprint) {
       const blueprintData = Blueprints[blueprint.id]
 
@@ -62,6 +64,7 @@ const columns: DataTableColumns<Blueprint> = [
 const filters = reactive({
   affordable: false,
   producing: false,
+  search: '',
 })
 
 const data = computed(() => {
@@ -77,12 +80,16 @@ const data = computed(() => {
   if (filters.producing)
     blueprints = blueprints.filter(blueprint => productionStore.isProducing(blueprint.id))
 
+  if (filters.search)
+    blueprints = blueprints.filter(blueprint => blueprint.name.toLowerCase().includes(filters.search.toLowerCase()))
+
   return blueprints
 })
 
 function resetFilters() {
   filters.affordable = false
   filters.producing = false
+  filters.search = ''
 }
 </script>
 
@@ -90,21 +97,43 @@ function resetFilters() {
   <NH1>Blueprints</NH1>
 
   <div class="space-y-6">
-    <div>
-      <NCheckbox v-model:checked="filters.affordable">
-        Affordable
-      </NCheckbox>
+    <NCard title="Filter">
+      <div class="grid items-center gap-12 grid-cols-[360px_120px_120px]">
+        <NInput v-model:value="filters.search" placeholder="Search">
+          <template #prefix>
+            <NIcon class="ico-mdi-magnify" />
+          </template>
+        </NInput>
 
-      <NCheckbox v-model:checked="filters.producing">
-        Producing
-      </NCheckbox>
+        <NTooltip trigger="hover">
+          <template #trigger>
+            <NCheckbox v-model:checked="filters.affordable">
+              Affordable
+            </NCheckbox>
+          </template>
 
-      <NButton @click="resetFilters()">
-        Reset Filters
-      </NButton>
-    </div>
+          <div>Only show items which you can afford to produce.</div>
+        </NTooltip>
 
-    <NDataTable :columns="columns" :data="data" :single-line="false" />
+        <NTooltip trigger="hover">
+          <template #trigger>
+            <NCheckbox v-model:checked="filters.producing">
+              Producing
+            </NCheckbox>
+          </template>
+
+          <div>Only show items which you are currently producing.</div>
+        </ntooltip>
+      </div>
+
+      <template #action>
+        <NButton secondary @click="resetFilters()">
+          Reset Filters
+        </NButton>
+      </template>
+    </NCard>
+
+    <NDataTable :columns="columns" :data="data" :single-line="false" table-layout="fixed" />
   </div>
 </template>
 

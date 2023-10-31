@@ -39,7 +39,7 @@ jobs:
 
       - name: Check Types
         run: |
-          npx tsc --noEmit
+          npx pnpm run typecheck
 
   lint:
     runs-on: ubuntu-latest

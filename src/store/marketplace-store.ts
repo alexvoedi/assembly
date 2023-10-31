@@ -154,19 +154,5 @@ export const useMarketplaceStore = defineStore('marketplace-store', {
         marketValue.current = Math.min(Math.max(newMarketValue, min), max)
       })
     },
-
-    getTotalMarketValue() {
-      const inventoryStore = useInventoryStore()
-
-      let totalMarketValue = inventoryStore.money
-
-      inventoryStore.getItemArray().forEach((inventoryItem) => {
-        const marketValue = this.prices[inventoryItem.id].current
-
-        totalMarketValue += inventoryItem.quantity * marketValue
-      })
-
-      return totalMarketValue
-    },
   },
 })

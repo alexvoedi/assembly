@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { DataTableColumns } from 'naive-ui'
+import MarketValueHistoryGraph from './MarketValueHistoryGraph.vue'
 import { useInventoryStore } from '@/store/inventory-store'
 import { Items } from '@/data/items/Items'
 import { useMarketplaceStore } from '@/store/marketplace-store'
@@ -10,6 +11,18 @@ const inventoryStore = useInventoryStore()
 const marketplaceStore = useMarketplaceStore()
 
 const columns: DataTableColumns<InventoryItem> = [
+  {
+    type: 'expand',
+    expandable: () => true,
+    renderExpand: (rowData) => {
+      return h(
+        MarketValueHistoryGraph,
+        {
+          itemId: rowData.id,
+        },
+      )
+    },
+  },
   {
     title: 'Name',
     key: 'name',
