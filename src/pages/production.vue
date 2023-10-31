@@ -23,6 +23,7 @@ const columns: DataTableColumns<Blueprint> = [
   {
     title: 'Name',
     key: 'name',
+    sorter: (a, b) => a.name.localeCompare(b.name),
   },
   {
     title: 'Description',
@@ -148,7 +149,7 @@ const columns: DataTableColumns<Blueprint> = [
     title: 'Actions',
     key: 'actions',
     render(blueprint) {
-      const active = productionStore.getProduction(blueprint.id)
+      const active = productionStore.getProducing(blueprint.id)
 
       return h(
         BaseTableButton,

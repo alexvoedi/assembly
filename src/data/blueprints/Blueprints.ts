@@ -22,6 +22,12 @@ export const Blueprints: Record<BlueprintId, Blueprint> = {
     description: 'Allows you to obtain wood from trees.',
     cost: {
       energy: 1,
+      items: {
+        [ItemId.Water]: {
+          id: ItemId.Water,
+          quantity: 20,
+        },
+      },
     },
     items: {
       [ItemId.Wood]: {

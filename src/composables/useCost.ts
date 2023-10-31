@@ -12,19 +12,19 @@ export function useCost() {
 
     if (cost.energy) {
       if (!energyStore.hasEnoughEnergy(cost.energy))
-        throw new Error(`Cannot afford: not enough energy`)
+        return false
     }
 
     if (cost.money) {
       if (!inventoryStore.hasEnoughMoney(cost.money))
-        throw new Error(`Cannot afford: not enough money`)
+        return false
     }
 
     if (cost.items) {
       const items = Object.values(cost.items)
 
       if (!inventoryStore.hasQuantityOfItems(items))
-        throw new Error(`Cannot afford: not enough items`)
+        return false
     }
 
     return true

@@ -42,27 +42,27 @@ describe('useCost', () => {
     it('cannot afford energy', () => {
       const { canAfford } = useCost()
 
-      expect(() => {
+      expect(
         canAfford({
           energy: 100,
-        })
-      }).toThrow('Cannot afford: not enough energy')
+        }),
+      ).toBe(false)
     })
 
     it('cannot afford money', () => {
       const { canAfford } = useCost()
 
-      expect(() => {
+      expect(
         canAfford({
           money: 1000,
-        })
-      }).toThrow('Cannot afford: not enough money')
+        }),
+      ).toBe(false)
     })
 
     it('cannot afford items', () => {
       const { canAfford } = useCost()
 
-      expect(() => {
+      expect(
         canAfford({
           items: {
             [ItemId.Wood]: {
@@ -70,8 +70,8 @@ describe('useCost', () => {
               quantity: 100,
             },
           },
-        })
-      }).toThrow('Cannot afford: not enough items')
+        }),
+      ).toBe(false)
     })
   })
 

@@ -19,11 +19,11 @@ export const useProductionStore = defineStore('production-store', {
   }),
 
   actions: {
-    getProduction(blueprintId: BlueprintId) {
+    getProducing(blueprintId: BlueprintId) {
       return this.producing[blueprintId]
     },
 
-    hasProduction(blueprintId: BlueprintId) {
+    isProducing(blueprintId: BlueprintId) {
       return !!this.producing[blueprintId]
     },
 

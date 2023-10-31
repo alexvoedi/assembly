@@ -3,122 +3,109 @@ import type { DataTableColumns } from 'naive-ui'
 import { useBlueprintStore } from '../store/blueprint-store'
 import type { Blueprint } from '../interfaces/Blueprint'
 import { Blueprints } from '../data/blueprints/Blueprints'
-import { Items } from '../data/items/Items'
-import { UnitMeasurement } from '../data/items/UnitMeasurement'
+import { useCost } from '../composables/useCost'
+import { useProductionStore } from '../store/production-store'
+import ItemList from '@/components/common/ItemList.vue'
 
 const blueprintStroe = useBlueprintStore()
-
-function unitToIcon(unit: UnitMeasurement) {
-  switch (unit) {
-    case UnitMeasurement.Kilogram:
-      return 'ico-mdi-weight-kilogram text-yellow'
-    case UnitMeasurement.Liter:
-      return 'ico-mdi-water text-blue'
-    case UnitMeasurement.Piece:
-      return 'ico-mdi-cube-outline text-green'
-    default:
-      throw new Error(`Unknown unit: ${unit}`)
-  }
-}
+const productionStore = useProductionStore()
+const { canAfford } = useCost()
 
 const columns: DataTableColumns<Blueprint> = [
   {
     title: 'Name',
     key: 'name',
+    width: 240,
   },
   {
     title: 'Description',
     key: 'description',
+    width: 360,
   },
   {
     title: 'Input',
     key: 'input',
+    width: 280,
     render(blueprint) {
       const blueprintData = Blueprints[blueprint.id]
 
       if (!blueprintData.cost)
         return null
 
-      if (!blueprintData.cost.items)
-        return null
-
       return h(
-        'div',
+        ItemList,
         {
-          class: 'font-mono',
+          energy: blueprintData.cost.energy,
+          money: blueprintData.cost.money,
+          items: blueprintData.cost.items ? Object.values(blueprintData.cost.items) : [],
         },
-        Object.values(blueprintData.cost.items).map((item) => {
-          const unit = unitToIcon(Items[item.id].unit.measurement)
-
-          return h(
-            'div',
-            {
-              class: [
-                'flex items-center gap-1',
-              ],
-            },
-            [
-              `${Items[item.id].name} ${item.quantity}`,
-              h('span', {
-                class: [
-                  unit,
-                ],
-              }),
-            ],
-          )
-        }),
       )
     },
   },
   {
     title: 'Output',
     key: 'output',
+    width: 280,
     render(blueprint) {
+      const blueprintData = Blueprints[blueprint.id]
+
       return h(
-        'div',
+        ItemList,
         {
-          class: 'font-mono',
+          items: Object.values(blueprintData.items),
         },
-        Object.values(Blueprints[blueprint.id].items).map((item) => {
-          const quantity = Array.isArray(item.quantity)
-            ? `${item.quantity[0]}-${item.quantity[1]}`
-            : item.quantity
-
-          const unit = unitToIcon(Items[item.id].unit.measurement)
-
-          return h(
-            'div',
-            {
-              class: [
-                'flex items-center gap-1',
-              ],
-            },
-            [
-              `${Items[item.id].name} ${quantity}`,
-              h('span', {
-                class: [
-                  unit,
-                ],
-              }),
-            ],
-          )
-        }),
       )
     },
   },
 ]
 
-const data = computed(() => blueprintStroe.blueprints.map(blueprintId => ({
-  id: blueprintId,
-  name: Blueprints[blueprintId].name,
-  description: Blueprints[blueprintId].description,
-})))
+const filters = reactive({
+  affordable: false,
+  producing: false,
+})
+
+const data = computed(() => {
+  let blueprints = blueprintStroe.blueprints.map(blueprintId => ({
+    id: blueprintId,
+    name: Blueprints[blueprintId].name,
+    description: Blueprints[blueprintId].description,
+  }))
+
+  if (filters.affordable)
+    blueprints = blueprints.filter(blueprint => canAfford(Blueprints[blueprint.id].cost))
+
+  if (filters.producing)
+    blueprints = blueprints.filter(blueprint => productionStore.isProducing(blueprint.id))
+
+  return blueprints
+})
+
+function resetFilters() {
+  filters.affordable = false
+  filters.producing = false
+}
 </script>
 
 <template>
   <NH1>Blueprints</NH1>
 
-  <NDataTable :columns="columns" :data="data" />
+  <div class="space-y-6">
+    <div>
+      <NCheckbox v-model:checked="filters.affordable">
+        Affordable
+      </NCheckbox>
+
+      <NCheckbox v-model:checked="filters.producing">
+        Producing
+      </NCheckbox>
+
+      <NButton @click="resetFilters()">
+        Reset Filters
+      </NButton>
+    </div>
+
+    <NDataTable :columns="columns" :data="data" :single-line="false" />
+  </div>
 </template>
 
 <style>
