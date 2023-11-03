@@ -75,7 +75,7 @@ const activeRoute = computed(() => {
 </script>
 
 <template>
-  <nav class="h-full">
+  <nav class="h-full border-r border-r-dark">
     <NMenu :options="menuOptions" :value="activeRoute" />
   </nav>
 </template>

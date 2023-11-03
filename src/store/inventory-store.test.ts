@@ -349,7 +349,7 @@ describe('inventory-store', () => {
       inventoryStore.addItem(ItemId.Water, 123)
       inventoryStore.addItem(ItemId.Wheat, 1)
 
-      expect(inventoryStore.getItemArray()).toEqual([
+      expect(inventoryStore.getItemsArray()).toEqual([
         {
           id: ItemId.Water,
           quantity: 123,

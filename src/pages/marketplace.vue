@@ -6,10 +6,12 @@ import roundToNFractionDigits from '../utils/roundToNFractionDigits'
 const marketplaceStore = useMarketplaceStore()
 const inventoryStore = useInventoryStore()
 
+const lastTab = useLocalStorage('marketplace-page/default-tab', 'market')
+
 const totalMarketValue = computed(() => {
   let total = inventoryStore.money
 
-  inventoryStore.getItemArray().forEach((inventoryItem) => {
+  inventoryStore.getItemsArray().forEach((inventoryItem) => {
     const marketValue = marketplaceStore.prices[inventoryItem.id].current
 
     total += inventoryItem.quantity * marketValue
@@ -39,8 +41,39 @@ const totalMarketValue = computed(() => {
       </NCard>
     </div>
 
-    <NCard title="Sell Items" content-style="padding: 0;">
-      <MarketplaceSellingDataTable />
+    <NCard content-style="padding: 0;">
+      <NTabs
+        v-model:value="lastTab"
+        default-value="inventory"
+        size="large"
+        type="segment"
+        animated
+        :tabs-padding="20"
+        pane-style="padding: 20px;"
+        justify-content="space-evenly"
+      >
+        <NTabPane name="market" style="padding: 0;">
+          <template #tab>
+            <div class="flex items-center justify-center gap-2 text-xl">
+              <span class="ico-mdi-package-variant-closed" />
+              <span>Market</span>
+            </div>
+          </template>
+
+          <MarketplaceMarketDataTable />
+        </NTabPane>
+
+        <NTabPane name="sell" style="padding: 0;">
+          <template #tab>
+            <div class="flex items-center justify-center gap-2 text-xl">
+              <span class="ico-ic-baseline-monetization-on" />
+              <span>Sell</span>
+            </div>
+          </template>
+
+          <MarketplaceSellingDataTable />
+        </NTabPane>
+      </NTabs>
     </NCard>
 
     <MarketplaceAutomationCard />

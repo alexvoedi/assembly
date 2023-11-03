@@ -5,6 +5,7 @@ import type { Blueprint } from '../interfaces/Blueprint'
 import { Blueprints } from '../data/blueprints/Blueprints'
 import { useCost } from '../composables/useCost'
 import { useProductionStore } from '../store/production-store'
+import { millisecondsToTime } from '../utils/millisecondsToTime'
 import ItemList from '@/components/common/ItemList.vue'
 
 const blueprintStroe = useBlueprintStore()
@@ -59,6 +60,12 @@ const columns: DataTableColumns<Blueprint> = [
       )
     },
   },
+  {
+    title: 'Production Time',
+    key: 'productionTime',
+    className: 'font-mono',
+    width: 120,
+  },
 ]
 
 const filters = reactive({
@@ -68,11 +75,16 @@ const filters = reactive({
 })
 
 const data = computed(() => {
-  let blueprints = blueprintStroe.blueprints.map(blueprintId => ({
-    id: blueprintId,
-    name: Blueprints[blueprintId].name,
-    description: Blueprints[blueprintId].description,
-  }))
+  let blueprints = blueprintStroe.blueprints.map((blueprintId) => {
+    const { name, description, productionTime } = Blueprints[blueprintId]
+
+    return {
+      id: blueprintId,
+      name,
+      description,
+      productionTime: millisecondsToTime(productionTime),
+    }
+  })
 
   if (filters.affordable)
     blueprints = blueprints.filter(blueprint => canAfford(Blueprints[blueprint.id].cost))

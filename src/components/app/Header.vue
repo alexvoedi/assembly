@@ -15,7 +15,7 @@ const appVersion = APP_VERSION
 </script>
 
 <template>
-  <header class="h-16 flex items-center justify-between px-8">
+  <header class="h-16 flex items-center justify-between px-8 border-b border-b-dark">
     <div class="flex flex-col justify-center">
       <h1 class="text-2xl">
         Assembly

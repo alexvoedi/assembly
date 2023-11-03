@@ -113,7 +113,7 @@ export const Items: Record<ItemId, Item> = {
     marketValue: {
       average: 0.1,
       min: 0.05,
-      max: 0.5,
+      max: 0.3,
     },
   },
   [ItemId.Screw]: {
@@ -209,7 +209,7 @@ export const Items: Record<ItemId, Item> = {
       measurement: UnitMeasurement.Liter,
     },
     marketValue: {
-      average: 0.0002,
+      average: 0.0004,
       min: 0.0001,
       max: 0.001,
     },

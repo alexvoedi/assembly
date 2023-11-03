@@ -32,7 +32,7 @@ const columns: DataTableColumns<InventoryItem> = [
   },
 ]
 
-const data = computed(() => inventoryStore.getItemArray().map(item => ({
+const data = computed(() => inventoryStore.getItemsArray().map(item => ({
   id: item.id,
   quantity: item.quantity,
   name: Items[item.id].name,

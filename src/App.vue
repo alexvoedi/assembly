@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { darkTheme } from 'naive-ui'
+
+const isDev = import.meta.env.DEV
 </script>
 
 <template>
   <NConfigProvider :theme="darkTheme" abstract>
     <NMessageProvider>
       <BaseLayout />
+      <DevConsole v-if="isDev" />
     </NMessageProvider>
   </NConfigProvider>
 </template>

@@ -135,7 +135,7 @@ export const useInventoryStore = defineStore('inventory-store', {
       return this.getTotalItems() >= this.maxItems
     },
 
-    getItemArray() {
+    getItemsArray() {
       return Object.entries(this.items).map(([itemId, item]) => ({
         ...item,
         id: itemId as ItemId,
@@ -144,6 +144,13 @@ export const useInventoryStore = defineStore('inventory-store', {
 
     getFilledPercentage() {
       return this.getTotalItems() / this.maxItems
+    },
+
+    setMoney(value: number) {
+      if (!isPositive(value))
+        throw new Error(`Tried to set ${value} as money but it's not a positive number.`)
+
+      this.money = value
     },
   },
 })

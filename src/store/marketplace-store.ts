@@ -131,6 +131,13 @@ export const useMarketplaceStore = defineStore('marketplace-store', {
       this.strategies = {}
     },
 
+    getPricesArray() {
+      return Object.entries(this.prices).map(([itemId, price]) => ({
+        ...price,
+        id: itemId as ItemId,
+      }))
+    },
+
     getStrategiesArray() {
       return Object.values(this.strategies)
     },
