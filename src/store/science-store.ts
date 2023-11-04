@@ -10,7 +10,8 @@ import { useBlueprintStore } from './blueprint-store'
 type ScienceStore = RemovableRef<{
   researchable: ScienceId[]
   researching: Partial<Record<ScienceId, ResearchPlan>>
-  researched: ScienceId[]
+  paused: Partial<Record<ScienceId, ResearchPlan>>
+  researched: Partial<Record<ScienceId, { id: ScienceId; date: number }>>
   maxResearching: number
 }>
 
@@ -18,13 +19,14 @@ export const useScienceStore = defineStore('science-store', {
   state: (): ScienceStore => useLocalStorage('science-store', {
     researchable: [],
     researching: {},
-    researched: [],
+    paused: {},
+    researched: {},
     maxResearching: 1,
   }),
 
   actions: {
     isResearched(scienceId: ScienceId) {
-      return this.researched.includes(scienceId)
+      return !!this.researched[scienceId]
     },
 
     areResearched(scienceIds: ScienceId[]) {
@@ -80,6 +82,8 @@ export const useScienceStore = defineStore('science-store', {
         start: Date.now(),
       }
 
+      this.removeResearchable(scienceId)
+
       this.researching[scienceId] = research
 
       this.research(research)
@@ -88,7 +92,10 @@ export const useScienceStore = defineStore('science-store', {
     finishResearch(scienceId: ScienceId) {
       const science = Sciences[scienceId]
 
-      this.researched.push(scienceId)
+      this.researched[scienceId] = {
+        id: scienceId,
+        date: Date.now(),
+      }
 
       this.removeResearchable(scienceId)
 
@@ -128,9 +135,31 @@ export const useScienceStore = defineStore('science-store', {
       delete this.researching[scienceId]
     },
 
-    // cancelResearch(scienceId: ScienceId) {
-    //
-    // },
+    pauseResearch(scienceId: ScienceId) {
+      const research = this.researching[scienceId]
+
+      if (!research)
+        throw new Error(`Not researching ${scienceId}`)
+
+      research.pause = Date.now()
+
+      this.stopResearch(scienceId)
+
+      this.paused[scienceId] = research
+    },
+
+    continueResearch(scienceId: ScienceId) {
+      const research = this.paused[scienceId]
+
+      if (!research)
+        throw new Error(`Not paused ${scienceId}`)
+
+      research.pause = undefined
+
+      this.research(research)
+
+      delete this.paused[scienceId]
+    },
 
     getResearchProgress(scienceId: ScienceId, now: number) {
       const researchPlan = this.researching[scienceId]
@@ -157,7 +186,7 @@ export const useScienceStore = defineStore('science-store', {
 
       this.researchable = []
       this.researching = {}
-      this.researched = []
+      this.researched = {}
       this.maxResearching = 1
     },
   },

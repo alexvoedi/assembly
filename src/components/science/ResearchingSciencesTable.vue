@@ -76,10 +76,10 @@ const columns: DataTableColumns<Science> = [
             active ? 'text-red' : 'text-green',
           ],
           onClick: active
-            ? () => scienceStore.stopResearch(science.id)
+            ? () => scienceStore.pauseResearch(science.id)
             : () => {
                 try {
-                  scienceStore.startResearch(science.id)
+                  scienceStore.continueResearch(science.id)
                 }
                 catch (error) {
                   if (error instanceof Error)
@@ -92,7 +92,10 @@ const columns: DataTableColumns<Science> = [
   },
 ]
 
-const data = computed(() => Object.values(scienceStore.researching).map(science => ({
+const data = computed(() => [
+  ...Object.values(scienceStore.researching),
+  ...Object.values(scienceStore.paused),
+].map(science => ({
   ...Sciences[science.scienceId],
 })))
 </script>

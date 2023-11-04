@@ -6,11 +6,17 @@ import { useInventoryStore } from '../store/inventory-store'
 const [show, toggle] = useToggle(false)
 const message = useMessage()
 
+const containerRef = ref<HTMLDivElement | null>(null)
 const inputRef = ref<InputInst | null>(null)
 const outputRef = ref<HTMLDivElement | null>(null)
 
 const command = ref('')
 const history = useLocalStorage<string[]>('dev-console-history', [])
+
+onClickOutside(containerRef, () => {
+  if (show.value)
+    toggle()
+})
 
 window.addEventListener('keydown', (event) => {
   if (event.key === 'F10') {
@@ -132,7 +138,7 @@ function runCommand(command: string) {
 </script>
 
 <template>
-  <div v-show="show" class="h-480px absolute bottom-0 left-0 right-0 z-100 bg-black opacity-80 font-mono! p-4 flex flex-col space-y-4">
+  <div v-show="show" ref="containerRef" class="h-480px absolute bottom-0 left-0 right-0 z-100 bg-black opacity-80 font-mono! p-4 flex flex-col space-y-4">
     <h1 class="font-bold text-xl">
       Dev Console
     </h1>

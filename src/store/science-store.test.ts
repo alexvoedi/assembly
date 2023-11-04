@@ -13,7 +13,10 @@ describe('science-store', () => {
     it('should return true if the science is researched', () => {
       const scienceScore = useScienceStore()
 
-      scienceScore.researched.push(ScienceId.InventoryUpgrade1)
+      scienceScore.researched[ScienceId.InventoryUpgrade1] = {
+        id: ScienceId.InventoryUpgrade1,
+        date: Date.now(),
+      }
 
       expect(scienceScore.isResearched(ScienceId.InventoryUpgrade1)).toBe(true)
     })
@@ -29,7 +32,10 @@ describe('science-store', () => {
     it('should return false if atleast one science is not researched', () => {
       const scienceScore = useScienceStore()
 
-      scienceScore.researched.push(ScienceId.InventoryUpgrade1)
+      scienceScore.researched[ScienceId.InventoryUpgrade1] = {
+        id: ScienceId.InventoryUpgrade1,
+        date: Date.now(),
+      }
 
       expect(scienceScore.areResearched([
         ScienceId.InventoryUpgrade1,
@@ -40,8 +46,14 @@ describe('science-store', () => {
     it('should return true if all sciences are researched', () => {
       const scienceScore = useScienceStore()
 
-      scienceScore.researched.push(ScienceId.InventoryUpgrade1)
-      scienceScore.researched.push(ScienceId.MultiTasking1)
+      scienceScore.researched[ScienceId.InventoryUpgrade1] = {
+        id: ScienceId.InventoryUpgrade1,
+        date: Date.now(),
+      }
+      scienceScore.researched[ScienceId.MultiTasking1] = {
+        id: ScienceId.MultiTasking1,
+        date: Date.now(),
+      }
 
       expect(scienceScore.areResearched([
         ScienceId.InventoryUpgrade1,
@@ -123,7 +135,10 @@ describe('science-store', () => {
     it('should throw if the science is already researched', () => {
       const scienceScore = useScienceStore()
 
-      scienceScore.researched.push(ScienceId.InventoryUpgrade1)
+      scienceScore.researched[ScienceId.InventoryUpgrade1] = {
+        id: ScienceId.InventoryUpgrade1,
+        date: Date.now(),
+      }
 
       expect(() => scienceScore.addResearchable(ScienceId.InventoryUpgrade1)).toThrow()
     })
@@ -165,7 +180,10 @@ describe('science-store', () => {
     it('should throw if the science is already researched', () => {
       const scienceScore = useScienceStore()
 
-      scienceScore.researched.push(ScienceId.InventoryUpgrade1)
+      scienceScore.researched[ScienceId.InventoryUpgrade1] = {
+        id: ScienceId.InventoryUpgrade1,
+        date: Date.now(),
+      }
 
       expect(() => scienceScore.startResearch(ScienceId.InventoryUpgrade1)).toThrow()
     })
@@ -210,7 +228,12 @@ describe('science-store', () => {
 
       scienceScore.finishResearch(ScienceId.InventoryUpgrade1)
 
-      expect(scienceScore.researched).toContain(ScienceId.InventoryUpgrade1)
+      expect(scienceScore.researched).toEqual({
+        [ScienceId.InventoryUpgrade1]: {
+          id: ScienceId.InventoryUpgrade1,
+          date: expect.any(Number),
+        },
+      })
     })
 
     it('should throw if the science is not researching', () => {
@@ -274,7 +297,7 @@ describe('science-store', () => {
         timerId: 0,
       }
 
-      expect(scienceScore.getResearchProgress(ScienceId.InventoryUpgrade1, Date.now())).toBe(1)
+      expect(scienceScore.getResearchProgress(ScienceId.InventoryUpgrade1, Date.now())).toBeCloseTo(1)
     })
 
     it('should return the progress if the science is still researching', () => {
