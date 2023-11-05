@@ -5,21 +5,52 @@ import { UnitMeasurement } from '../../data/items/UnitMeasurement'
 import { useEnergyStore } from '../../store/energy-store'
 import { useInventoryStore } from '../../store/inventory-store'
 
+interface Item {
+  id: ItemId
+  quantity: number | [number, number]
+  probability?: number
+}
+
 const props = defineProps<{
   affordable?: boolean
   energy?: number
   money?: number
-  items: Array<{
-    id: ItemId
-    quantity: number | [number, number]
-    probability?: number
-  }>
+  items: Item[]
 }>()
 
 const inventoryStore = useInventoryStore()
 const energyStore = useEnergyStore()
 
 const hasProbabilities = computed(() => props.items.some(item => item.probability))
+
+function getItemClass(item: Item) {
+  const quantity = Array.isArray(item.quantity) ? item.quantity[0] : item.quantity
+
+  if (props.affordable) {
+    if (inventoryStore.hasQuantityOfItem(item.id, quantity))
+      return 'text-green-500'
+    else
+      return 'text-red-500'
+  }
+}
+
+function getEnergyClass(energy: number) {
+  if (props.affordable) {
+    if (energyStore.hasEnoughEnergy(energy))
+      return 'text-green-500'
+    else
+      return 'text-red-500'
+  }
+}
+
+function getMoneyClass(money: number) {
+  if (props.affordable) {
+    if (inventoryStore.hasEnoughMoney(money))
+      return 'text-green-500'
+    else
+      return 'text-red-500'
+  }
+}
 </script>
 
 <template>
@@ -36,9 +67,7 @@ const hasProbabilities = computed(() => props.items.some(item => item.probabilit
       </div>
 
       <div
-        class="flex items-center gap-1 justify-self-end" :class="[
-          inventoryStore.hasItem(item.id) ? 'text-green-500' : 'text-red-500',
-        ]"
+        class="flex items-center gap-1 justify-self-end" :class="getItemClass(item)"
       >
         <span v-if="Array.isArray(item.quantity)">
           {{ item.quantity[0] }}-{{ item.quantity[1] }}
@@ -58,9 +87,7 @@ const hasProbabilities = computed(() => props.items.some(item => item.probabilit
       <div />
       <div class="flex items-center gap-1 justify-self-end">
         <span
-          :class="[
-            energyStore.hasEnoughEnergy(energy) ? 'text-green-500' : 'text-red-500',
-          ]"
+          :class="getEnergyClass(energy)"
         >{{ energy }}</span>
         <CommonUnitIcon :unit="UnitMeasurement.Energy" />
       </div>
@@ -71,9 +98,7 @@ const hasProbabilities = computed(() => props.items.some(item => item.probabilit
       <div />
       <div class="flex items-center gap-1 justify-self-end">
         <span
-          :class="[
-            inventoryStore.hasEnoughMoney(money) ? 'text-green-500' : 'text-red-500',
-          ]"
+          :class="getMoneyClass(money)"
         >{{ money }}</span>
         <CommonUnitIcon :unit="UnitMeasurement.Money" />
       </div>

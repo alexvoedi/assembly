@@ -38,6 +38,7 @@ const columns: DataTableColumns<Blueprint> = [
       return h(
         ItemList,
         {
+          affordable: true,
           energy: blueprintData.cost.energy,
           money: blueprintData.cost.money,
           items: blueprintData.cost.items ? Object.values(blueprintData.cost.items) : [],

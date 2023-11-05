@@ -20,7 +20,12 @@ function uploadSave({ file: { file } }: { file: Required<FileInfo> }) {
 <template>
   <NH1>Game</NH1>
 
-  <NButton @click="gameStore.resetGame()">
+  <NButton
+    @click="() => {
+      gameStore.resetGame()
+      gameStore.initGame()
+    }"
+  >
     Reset Game
   </NButton>
 

@@ -1,5 +1,6 @@
 import type { RemovableRef } from '@vueuse/core'
 import { defineStore } from 'pinia'
+import { areGameVersionsEqual } from '../utils/areGameVersionsEqual'
 import { useBlueprintStore } from './blueprint-store'
 import { useEffectStore } from './effect-store'
 import { useEnergyStore } from './energy-store'
@@ -10,11 +11,13 @@ import { useMarketplaceStore } from './marketplace-store'
 
 type GameStore = RemovableRef<{
   start: number
+  lastAppVersion: string
 }>
 
 export const useGameStore = defineStore('game-store', {
   state: (): GameStore => useLocalStorage('game-store', {
     start: Date.now(),
+    lastAppVersion: APP_VERSION,
   }),
 
   actions: {
@@ -27,8 +30,6 @@ export const useGameStore = defineStore('game-store', {
       const productionStore = useProductionStore()
       const scienceStore = useScienceStore()
 
-      localStorage.clear()
-
       blueprintStore.resetStore()
       effectStore.resetStore()
       energyStore.resetStore()
@@ -38,8 +39,6 @@ export const useGameStore = defineStore('game-store', {
       scienceStore.resetStore()
 
       this.resetStore()
-
-      this.initGame()
     },
 
     resetStore() {
@@ -47,6 +46,8 @@ export const useGameStore = defineStore('game-store', {
     },
 
     initGame() {
+      this.migrateGame()
+
       const blueprintStore = useBlueprintStore()
       const scienceStore = useScienceStore()
 
@@ -103,8 +104,16 @@ export const useGameStore = defineStore('game-store', {
 
       reader.readAsText(file)
     },
-  },
 
-  getters: {
+    migrateGame() {
+      const gameVersionsEqual = areGameVersionsEqual(this.lastAppVersion, APP_VERSION)
+
+      if (gameVersionsEqual)
+        return
+
+      this.resetGame()
+
+      this.lastAppVersion = APP_VERSION
+    },
   },
 })

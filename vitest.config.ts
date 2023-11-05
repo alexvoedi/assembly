@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { defineConfig } from 'vitest/config'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
@@ -9,6 +10,9 @@ export default defineConfig({
     coverage: {
       provider: 'istanbul',
     },
+  },
+  define: {
+    APP_VERSION: JSON.stringify(process.env.npm_package_version),
   },
   plugins: [
     Components({
