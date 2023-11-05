@@ -1,0 +1,1 @@
+function x(s){if(s===0)return"0ms";if(s<0)throw new Error("millisecondsToTime: duration must be a positive number");const e=s%1e3,o=Math.floor(s/1e3%60),t=Math.floor(s/(1e3*60)%60),n=Math.floor(s/(1e3*60*60)%24),c=Math.floor(s/(1e3*60*60*24)%365),l=`${e}ms`,i=`${o}s`,m=`${t}m`,r=`${n}h`;return[`${c}d`,r,m,i,l].filter(T=>T[0]!=="0").join(" ")}export{x as m};
