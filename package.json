@@ -1,7 +1,7 @@
 {
   "name": "@alexvoedi/assembly",
   "type": "module",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A game about blueprints, production and trade",
   "author": {
     "name": "Alexander Vödisch",
