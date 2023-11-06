@@ -1,4 +1,7 @@
 export function areGameVersionsEqual(oldVersion: string, newVersion: string) {
+  if (!oldVersion || !newVersion)
+    return false
+
   // check with regex if oldVersion has format "x.y.z" or throw
   const oldVersionRegex = /^(\d+)\.(\d+)\.(\d+)$/
 
