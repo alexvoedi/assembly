@@ -1,0 +1,1 @@
+import{_ as t,o,j as r,w as c,f as n}from"./index-e716d3d9.js";import{N as a}from"./headers-7708fb58.js";const s={};function _(f,l){const e=a;return o(),r(e,null,{default:c(()=>[n("Energy")]),_:1})}const d=t(s,[["render",_]]);export{d as default};
